@@ -4,6 +4,21 @@ from lxml import html
 import requests
 import clipboard
 
+#    ____  _       _ __ __              ______     __       __  
+#   / __ \(_)___ _(_) //_/__  __  __   / ____/__  / /______/ /_ 
+#  / / / / / __ `/ / ,< / _ \/ / / /  / /_  / _ \/ __/ ___/ __ \
+# / /_/ / / /_/ / / /| /  __/ /_/ /  / __/ /  __/ /_/ /__/ / / /
+#/_____/_/\__, /_/_/ |_\___/\__, /  /_/    \___/\__/\___/_/ /_/ 
+#        /____/            /____/                               
+#
+#   Simple DigiKey fetch class
+#   URL     : http://sasakaranovic.com/projects/digikey-fetch-tool/
+#   Author  : Sasa Karanovic
+#   Version : 0.1
+#
+
+
+
 class digikey:
 
     #Initialize class to defaults
@@ -47,19 +62,20 @@ class digikey:
         print "Description: \t\t" + self.Description
 
 
-    def ValidateAndSetURL(self,url):
-        if url.find("digikey") == -1:
-            print "Invalid URL!"
-            return 0
+    #Simple validation of DigiKey URL that user has provided
+    def ValidateAndSetURL(self, url):
+        if url.strip().find("digikey") == -1:
+            return -1
+        else:
+            #print "URL set to "+ url 
+            self.SetURL(url)
+            return 1
 
-        print "URL set to "+ url 
-        self.url = url
-        return 1
 
-
-    #Print available options to the user
-    def PrintCopyOptions(self):
-        print "\r\nWhat would you like to copy to clipboard?\r\n"
+    #Print menu with available options to the user,
+    #take user input, and process it
+    def DisplayMenuOptions(self):
+        print "\r\nWhat would you like to COPY to clipboard?\r\n"
 
         print "[1] - Manufacturer"
         print "[2] - Manufacturer Part Number"
@@ -71,8 +87,21 @@ class digikey:
         print "-------------------------------------"
         print "[0] - Quit"
 
-    #Based on user input, copy scraped information to clipboard
-    def ParseCopyOptions(self, option):
+
+        #loop here until we get a valid menu selection
+        while True:
+            option = raw_input('>> ')
+            try:
+               option = int(option)
+            except ValueError:
+               print 'Valid selection, please'
+               continue
+            if 0 <= option <= 8:
+               break
+            else:
+               print 'Valid range, please: 0-8'
+
+
         if option == 1:
             clipboard.copy(self.Manufacturer)
             print "Manufacturer info copied to clipboard.\r\n"
@@ -93,7 +122,36 @@ class digikey:
             clipboard.copy(self.Description)
             print "Description info copied to clipboard.\r\n"
 
+        elif option == 8:
+            self.AskForURL()
+
         elif option == 0:
             exit()
         else:
             print "Invalid option selected."
+
+
+    #Ask user to provide DigiKey URL for fetching data
+    def AskForURL(self):
+        while True:
+            print "Please enter DigiKey URL:"
+
+            digikeyURL = ""
+            #wait for use input
+            sys.stdout.write('>> ')
+            digikeyURL = raw_input().strip()
+            print ""
+
+            if self.ValidateAndSetURL(digikeyURL) == 1:
+                #Start ftching data
+                print "\r\n-------- Fetching Data --------\r\n"
+                self.StartScrape()
+                self.ShowScrapingInfo()
+                print "\r\n-------- Fetching Done --------"
+
+                break
+            else:
+                print "Invalid DigiKey URL!"
+
+
+
