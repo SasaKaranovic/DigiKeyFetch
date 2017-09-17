@@ -35,7 +35,7 @@ I assume that you have Pip installed ([instructions here][7]) and for this scrip
 
 This is a home-made script that I did in 15 min, therefore don't expect it to be bullet proof.
 
-It's a very nice tool and I use it on daily basis, however, for legal resons I have to say that you are using this script at your own risk.
+It's a very nice tool and I use it on daily basis, however, for legal reasons I have to say that you are using this script at your own risk.
 
 
 ## Find out more cool projects 
