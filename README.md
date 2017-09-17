@@ -14,7 +14,7 @@ Script will open the URL, parse data and fetch information such as Manufacturer,
 Shortly you should see fetched information and options to copy each individiual piece of information to clipboard
 so you just do paste into your favourite eCAD. You don't even have to do copy&paste, just paste. :)
 
-It's simple, and it works. I like it, your milage might vary.
+It's simple, and it works. I like it, your mileage might vary.
 
 
 ### Python Requirements
