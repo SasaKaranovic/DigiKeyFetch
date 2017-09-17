@@ -24,7 +24,9 @@ Script is written for Python 2.7 but should easily be ported to any other Python
 I assume that you have Pip installed ([instructions here][7]) and for this script to work please install following modules:
 
 `pip install lxml`
+
 `pip install clipboard`
+
 `pip install requests`
 
 
