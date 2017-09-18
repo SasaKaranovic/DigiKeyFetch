@@ -1,5 +1,8 @@
-import sys
 import os
+import sys
+import ctypes
+from ctypes import wintypes
+import win32con
 from lxml import html
 import requests
 import clipboard
@@ -16,7 +19,6 @@ import clipboard
 #   Author  : Sasa Karanovic
 #   Version : 0.1
 #
-
 
 
 class digikey:
@@ -61,6 +63,8 @@ class digikey:
         print "DigiKey PN: \t\t" + self.DigiKeyPN
         print "Description: \t\t" + self.Description
 
+        self.ShowShortcuts()
+
 
     #Simple validation of DigiKey URL that user has provided
     def ValidateAndSetURL(self, url):
@@ -70,65 +74,6 @@ class digikey:
             #print "URL set to "+ url 
             self.SetURL(url)
             return 1
-
-
-    #Print menu with available options to the user,
-    #take user input, and process it
-    def DisplayMenuOptions(self):
-        print "\r\nWhat would you like to COPY to clipboard?\r\n"
-
-        print "[1] - Manufacturer"
-        print "[2] - Manufacturer Part Number"
-        print "[3] - Distributor [always DigiKey]"
-        print "[4] - Distributor Part Number"
-        print "[5] - Description"
-        print "-------------------------------------"
-        print "[8] - Fetch another DigiKey Part"
-        print "-------------------------------------"
-        print "[0] - Quit"
-
-
-        #loop here until we get a valid menu selection
-        while True:
-            option = raw_input('>> ')
-            try:
-               option = int(option)
-            except ValueError:
-               print 'Valid selection, please'
-               continue
-            if 0 <= option <= 8:
-               break
-            else:
-               print 'Valid range, please: 0-8'
-
-
-        if option == 1:
-            clipboard.copy(self.Manufacturer)
-            print "Manufacturer info copied to clipboard.\r\n"
-
-        elif option == 2:
-            clipboard.copy(self.ManufacturerPN)
-            print "Manufacturer Part Number info copied to clipboard.\r\n"
-
-        elif option == 3:
-            clipboard.copy("DigiKey")
-            print "Distributor info copied to clipboard.\r\n"
-
-        elif option == 4:
-            clipboard.copy(self.DigiKeyPN)
-            print "Distributor Part Number info copied to clipboard.\r\n"
-
-        elif option == 5:
-            clipboard.copy(self.Description)
-            print "Description info copied to clipboard.\r\n"
-
-        elif option == 8:
-            self.AskForURL()
-
-        elif option == 0:
-            exit()
-        else:
-            print "Invalid option selected."
 
 
     #Ask user to provide DigiKey URL for fetching data
@@ -144,14 +89,54 @@ class digikey:
 
             if self.ValidateAndSetURL(digikeyURL) == 1:
                 #Start ftching data
-                print "\r\n-------- Fetching Data --------\r\n"
+                #print "\r\n-------- Fetching Data --------\r\n"
                 self.StartScrape()
                 self.ShowScrapingInfo()
-                print "\r\n-------- Fetching Done --------"
+                #print "\r\n-------- Fetching Done --------"
 
                 break
             else:
                 print "Invalid DigiKey URL!"
+
+
+    #Print out Shortcuts
+    def ShowShortcuts(self):
+        print "\r\n---------------------------------------------"
+        print "\r\n---\t Use following shortcuts \t---"
+        print "---   (You can use them in any window) \t---"
+        print ""
+        print "ALT+1 \t- Copy Manufacturer"
+        print "ALT+2 \t- Copy Manufacturer Part Number"
+        print "ALT+3 \t- Copy Distributor"
+        print "ALT+4 \t- Copy Distributor Part Number"
+        print "ALT+5 \t- Copy Description"
+        print "-----------------------------------"
+        print "ALT+0 \t- Fetch new Part"
+        print "-----------------------------------"
+        print "CTRL+Q \t- Quit"
+
+
+    #Self Explainatory functions
+    #Not used at the moment
+    # def CopyManufacturer(self):
+    #     clipboard.copy(self.Manufacturer)
+    #     print "Manufacturer info copied to clipboard."
+
+    # def CopyManufacturerPN(self):
+    #     clipboard.copy(self.ManufacturerPN)
+    #     print "ManufacturerPN info copied to clipboard."
+
+    # def CopyDistributor(self):
+    #     clipboard.copy("DigiKey")
+    #     print "Distributor info copied to clipboard."
+
+    # def CopyDistributorPN(self):
+    #     clipboard.copy(self.DigiKeyPN)
+    #     print "DigiKeyPN info copied to clipboard."
+
+    # def CopyDescription(self):
+    #     clipboard.copy(self.Description)
+    #     print "Description info copied to clipboard."
 
 
 
