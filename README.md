@@ -33,9 +33,11 @@ I assume that you have Pip installed ([instructions here][7]) and for this scrip
 
 ### Room for improvement
 
-This is a home-made script that I did in 15 min, therefore don't expect it to be bullet proof.
+This is a quick&dirty script that I needed and ended up creating in 15 min, therefore don’t expect it to be bullet proof.
 
-It's a very nice tool and I use it on daily basis, however, for legal reasons I have to say that you are using this script at your own risk.
+Nevertheless it is a very nice and practical tool to have and I use it on daily basis.
+
+I would love to hear how you use it, what do you like and what features would you like to see added next.
 
 
 ## Find out more cool projects 
