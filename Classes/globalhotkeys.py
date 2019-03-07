@@ -82,7 +82,8 @@ class GlobalHotKeys(object):
 
     @classmethod
     def _include_alpha_numeric_vks(cls):
-        for key_code in (range(ord('A'), ord('Z')) + range(ord('0'), ord('9'))):
+        # for key_code in (range(ord('A'), ord('Z')) + range(ord('0'), ord('9'))):
+        for key_code in ( list(range(ord('A'), ord('Z'))) + list(range(ord('0'), ord('9')+1)) ):
             setattr(cls, 'VK_' + chr(key_code), key_code)
 
 

@@ -28,42 +28,74 @@ dk = digikey()
 
 #define HotKeys to use
 
-@GlobalHotKeys.register(GlobalHotKeys.VK_1, GlobalHotKeys.MOD_ALT)
+# Hotkey -> CTRL+1
+@GlobalHotKeys.register(GlobalHotKeys.VK_1, GlobalHotKeys.MOD_CTRL)
+def CopyManufacturer():
+    clipboard.copy("Manufacturer")
+    print("'Manufacturer' info copied to clipboard.")
+
+# Hotkey -> CTRL+2
+@GlobalHotKeys.register(GlobalHotKeys.VK_2, GlobalHotKeys.MOD_CTRL)
 def CopyManufacturer():
     clipboard.copy(dk.Manufacturer)
-    print "Manufacturer info copied to clipboard."
+    print("'%s' copied to clipboard." % dk.Manufacturer)
 
-@GlobalHotKeys.register(GlobalHotKeys.VK_2, GlobalHotKeys.MOD_ALT)
+# Hotkey -> CTRL+3
+@GlobalHotKeys.register(GlobalHotKeys.VK_3, GlobalHotKeys.MOD_CTRL)
+def CopyManufacturerPN():
+    clipboard.copy("Manufacturer Part Number")
+    print("'Manufacturer Part Number' copied to clipboard.")
+
+# Hotkey -> CTRL+4
+@GlobalHotKeys.register(GlobalHotKeys.VK_4, GlobalHotKeys.MOD_CTRL)
 def CopyManufacturerPN():
     clipboard.copy(dk.ManufacturerPN)
-    print "ManufacturerPN info copied to clipboard."
+    print("'%s' copied to clipboard." % dk.ManufacturerPN)
 
-@GlobalHotKeys.register(GlobalHotKeys.VK_3, GlobalHotKeys.MOD_ALT)
+# Hotkey -> CTRL+5
+@GlobalHotKeys.register(GlobalHotKeys.VK_5, GlobalHotKeys.MOD_CTRL)
+def CopyDistributor():
+    clipboard.copy("Distributor")
+    print("'Distributor' copied to clipboard.")
+
+# Hotkey -> CTRL+6
+@GlobalHotKeys.register(GlobalHotKeys.VK_6, GlobalHotKeys.MOD_CTRL)
 def CopyDistributor():
     clipboard.copy("DigiKey")
-    print "Distributor info copied to clipboard."
+    print("'DigiKey' copied to clipboard.")
 
-@GlobalHotKeys.register(GlobalHotKeys.VK_4, GlobalHotKeys.MOD_ALT)
+# Hotkey -> CTRL+7
+@GlobalHotKeys.register(GlobalHotKeys.VK_7, GlobalHotKeys.MOD_CTRL)
+def CopyDistributorPN():
+    clipboard.copy("Distributor Part Number")
+    print("'Distributor Part Number' copied to clipboard.")
+
+# Hotkey -> CTRL+8
+@GlobalHotKeys.register(GlobalHotKeys.VK_8, GlobalHotKeys.MOD_CTRL)
 def CopyDistributorPN():
     clipboard.copy(dk.DigiKeyPN)
-    print "DigiKeyPN info copied to clipboard."
+    print("'%s' copied to clipboard." % dk.DigiKeyPN)
 
-@GlobalHotKeys.register(GlobalHotKeys.VK_5, GlobalHotKeys.MOD_ALT)
+# Hotkey -> CTRL+9
+@GlobalHotKeys.register(GlobalHotKeys.VK_9, GlobalHotKeys.MOD_CTRL)
 def CopyDescription():
     clipboard.copy(dk.Description)
-    print "Description info copied to clipboard."
+    print("Description info copied to clipboard.")
 
-
-@GlobalHotKeys.register(GlobalHotKeys.VK_0, GlobalHotKeys.MOD_ALT)
+# Hotkey -> CTRL+0
+@GlobalHotKeys.register(GlobalHotKeys.VK_0, GlobalHotKeys.MOD_CTRL)
 def ReStart():
     dk.AskForURL()
 
 # ctrl+q will exit script
 GlobalHotKeys.register(GlobalHotKeys.VK_Q, GlobalHotKeys.MOD_CTRL, False)
 
-
 #Ask user to provide URL for the first time
-dk.AskForURL()
+if (len(sys.argv) >= 2):
+    dk.SetUrl(sys.argv[1])
+else:
+    dk.AskForURL()
+
 
 #Main Loop
 GlobalHotKeys.listen()

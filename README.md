@@ -2,8 +2,12 @@
 
 Check it out on [SasaKaranovic.com/projects/digikey-fetch-tool/][1]
 
-Well, as the name suggests, this is a very simple tool that I use to fetch DigiKey
-information about parts while making new database components or while generating BOM
+If task is manual and you repeat it often, it should be automated!
+While working on new designs, you often find yourself in a position when you need to create new schematic symbols and/or provide information for their BoM entries. For that you would usually copy-paste information from a supplier website into your eCAD software.
+This is one of those tasks that should be automated.
+
+I've created a DigiKey fetch tool. As the name suggest, this script will prompt you for DigiKey URL and then it will fetch information about the part.
+Conveniently it also provides shortcuts (that will work in any window), so you don't have to ALT+TAB from your favorite eCAD at all. Just press CTRL+2 and Manufacturer name will be copied, CTL+4 and Part Number will be copied into your clipboard and so on.
 
 ### How does it work?
 
@@ -19,26 +23,27 @@ It's simple, and it works. I like it, your mileage might vary.
 
 ### Python Requirements
 
-Script is written for Python 2.7 but should easily be ported to any other Python version.
+Script is written for Python 3 but should easily be ported to any other Python version.
 
-I assume that you have Pip installed ([instructions here][7]) and for this script to work please install following modules:
 
-`pip install lxml`
-
-`pip install clipboard`
-
-`pip install requests`
-
+Using Pip, you can install all dependencies using `pip install -r requirements.txt`,
+or if you prefer, manually one by one (dependencies are: requests, clipboard, pypiwin32, lxml, requests)
 
 
 ### Room for improvement
 
-This is a quick&dirty script that I needed and ended up creating in 15 min, therefore don’t expect it to be bullet proof.
+If task is manual and you repeat it often, it should be automated! While co
+This is a quick and dirty script that I needed and ended up creating in 15 min, therefore don’t expect it to be bullet proof.
 
 Nevertheless it is a very nice and practical tool to have and I use it on daily basis.
 
 I would love to hear how you use it, what do you like and what features would you like to see added next.
 
+Currently script is not fetching information from DigiKey urls that have `?keywords=` in them due the way
+DigiKey is handling search queries (Try disabling JavaScript in your browser and visit the same URL, it will present a "blank" page).
+
+In order to avoid any OS related issues, string is copied into clipboard. It would be nice to have the script
+emulate keystrokes so it types the string for you.
 
 ## Find out more cool projects 
 

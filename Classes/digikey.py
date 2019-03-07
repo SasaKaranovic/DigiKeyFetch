@@ -17,7 +17,7 @@ import clipboard
 #   Simple DigiKey fetch class
 #   URL     : http://sasakaranovic.com/projects/digikey-fetch-tool/
 #   Author  : Sasa Karanovic
-#   Version : 0.1
+#   Version : 0.2
 #
 
 
@@ -42,8 +42,12 @@ class digikey:
         self.page   = requests.get(self.url)
         self.tree   = html.fromstring(self.page.content)
 
+        print(self.page.content)
+        exit()
+
+
         #Define some x-path related stuff
-        XP_PD_T = "//table[@id='product-details']//"
+        XP_PD_T = "//table[@id='product-overview']//"
 
         Manufacturer   = self.tree.xpath(XP_PD_T + "h2[@itemprop='manufacturer']//span[@itemprop='name']/text()")
         ManufacturerPN = self.tree.xpath(XP_PD_T + "th[contains(text(),'Manufacturer Part Number')]/following-sibling::td/meta/@content")
@@ -58,10 +62,11 @@ class digikey:
 
     #Display what has been scraped. Just for debug and let user verify that information looks fine
     def ShowScrapingInfo(self):
-        print "Manufacturer: \t\t" + self.Manufacturer
-        print "Manufacturer PN: \t" + self.ManufacturerPN
-        print "DigiKey PN: \t\t" + self.DigiKeyPN
-        print "Description: \t\t" + self.Description
+        print("Manufacturer:\t\t" + self.Manufacturer)
+        print("Manufacturer PN:\t" + self.ManufacturerPN)
+        print("Distributor:\t\tDigiKey")
+        print("Distributor PN:\t\t" + self.DigiKeyPN)
+        print("Description:\t\t" + self.Description)
 
         self.ShowShortcuts()
 
@@ -71,7 +76,7 @@ class digikey:
         if url.strip().find("digikey") == -1:
             return -1
         else:
-            #print "URL set to "+ url 
+            #print("URL set to "+ url )
             self.SetURL(url)
             return 1
 
@@ -79,64 +84,80 @@ class digikey:
     #Ask user to provide DigiKey URL for fetching data
     def AskForURL(self):
         while True:
-            print "Please enter DigiKey URL:"
+            print("Please enter DigiKey URL:")
 
             digikeyURL = ""
             #wait for use input
             sys.stdout.write('>> ')
-            digikeyURL = raw_input().strip()
-            print ""
+            digikeyURL = input().strip()
+            print("")
 
             if self.ValidateAndSetURL(digikeyURL) == 1:
                 #Start ftching data
-                #print "\r\n-------- Fetching Data --------\r\n"
+                #print("\r\n-------- Fetching Data --------\r\n")
                 self.StartScrape()
                 self.ShowScrapingInfo()
-                #print "\r\n-------- Fetching Done --------"
+                #print("\r\n-------- Fetching Done --------")
 
                 break
             else:
-                print "Invalid DigiKey URL!"
+                print("Invalid DigiKey URL!")
+
+    # Set URL
+    def SetUrl(self, digikeyURL):
+        while True:
+            if self.ValidateAndSetURL(digikeyURL) == 1:
+                #Start ftching data
+                #print("\r\n-------- Fetching Data --------\r\n")
+                self.StartScrape()
+                self.ShowScrapingInfo()
+                #print("\r\n-------- Fetching Done --------")
+
+                break
+            else:
+                print("Invalid DigiKey URL!")
+                exit()
 
 
-    #Print out Shortcuts
+    #Print(out Shortcuts)
     def ShowShortcuts(self):
-        print "\r\n---------------------------------------------"
-        print "\r\n---\t Use following shortcuts \t---"
-        print "---   (You can use them in any window) \t---"
-        print ""
-        print "ALT+1 \t- Copy Manufacturer"
-        print "ALT+2 \t- Copy Manufacturer Part Number"
-        print "ALT+3 \t- Copy Distributor"
-        print "ALT+4 \t- Copy Distributor Part Number"
-        print "ALT+5 \t- Copy Description"
-        print "-----------------------------------"
-        print "ALT+0 \t- Fetch new Part"
-        print "-----------------------------------"
-        print "CTRL+Q \t- Quit"
+        print("\r\n---------------------------------------------")
+        print("---\t Use following shortcuts \t---")
+        print("---   (You can use them in any window) \t---")
+        print("---------------------------------------------")
+        print("CTRL+1 \t- Copy 'Manufacturer'")
+        print("CTRL+2 \t- Copy '%s'" % self.Manufacturer)
+        print("CTRL+3 \t- Copy 'Manufacturer Part Number'")
+        print("CTRL+4 \t- Copy '%s'" % self.ManufacturerPN)
+        print("CTRL+5 \t- Copy 'Distributor'")
+        print("CTRL+6 \t- Copy 'DigiKey'")
+        print("CTRL+7 \t- Copy 'Distributor Part Number'")
+        print("CTRL+8 \t- Copy '%s'" % self.DigiKeyPN)
+        print("CTRL+9 \t- Copy Description")
+        print("-----------------------------------")
+        print("CTRL+0 \t- Fetch new Part (ask for new URL)")
+        print("-----------------------------------")
+        print("CTRL+Q \t- Quit")
 
 
     #Self Explainatory functions
     #Not used at the moment
     # def CopyManufacturer(self):
     #     clipboard.copy(self.Manufacturer)
-    #     print "Manufacturer info copied to clipboard."
+    #     print("Manufacturer info copied to clipboard.")
 
     # def CopyManufacturerPN(self):
     #     clipboard.copy(self.ManufacturerPN)
-    #     print "ManufacturerPN info copied to clipboard."
+    #     print("ManufacturerPN info copied to clipboard.")
 
     # def CopyDistributor(self):
     #     clipboard.copy("DigiKey")
-    #     print "Distributor info copied to clipboard."
+    #     print("Distributor info copied to clipboard.")
 
     # def CopyDistributorPN(self):
     #     clipboard.copy(self.DigiKeyPN)
-    #     print "DigiKeyPN info copied to clipboard."
+    #     print("DigiKeyPN info copied to clipboard.")
 
     # def CopyDescription(self):
     #     clipboard.copy(self.Description)
-    #     print "Description info copied to clipboard."
-
-
-
+    #     print("Description info copied to clipboard.")
