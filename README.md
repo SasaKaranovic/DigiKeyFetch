@@ -1,5 +1,8 @@
 # DigiKey Fetch Tool
 
+![DigiKey Fetch in action](https://github.com/SasaKaranovic/DigiKeyFetch/blob/master/img/demo.png?raw=true "DigiKey Fetch in action")
+
+
 Check it out on [SasaKaranovic.com/projects/digikey-fetch-tool/][1]
 
 If task is manual and you repeat it often, it should be automated!
