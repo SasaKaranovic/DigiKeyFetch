@@ -2,3 +2,4 @@ clipboard
 pypiwin32
 lxml
 requests
+keyboard
