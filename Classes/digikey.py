@@ -42,9 +42,6 @@ class digikey:
         self.page   = requests.get(self.url)
         self.tree   = html.fromstring(self.page.content)
 
-        print(self.page.content)
-        exit()
-
 
         #Define some x-path related stuff
         XP_PD_T = "//table[@id='product-overview']//"
