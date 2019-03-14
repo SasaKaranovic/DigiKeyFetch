@@ -23,7 +23,7 @@ import clipboard
 
 class digikey:
 
-    #Initialize class to defaults
+    # Initialize class to defaults
     def __init__(self, digiurl=""):
         self.url    = digiurl
 
@@ -33,11 +33,11 @@ class digikey:
         self.DigiKeyPN      = ''
         self.Description    = ''
 
-    #Set which URL to scrape
+    # Set which URL to scrape
     def SetURL(self, url):
         self.url = url
 
-    #Start gathering data
+    # Start gathering data
     def StartScrape(self):
         custom_header = {
                             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0',
@@ -64,7 +64,7 @@ class digikey:
         self.Description      = ''.join(Description).strip()
 
 
-    #Display what has been scraped. Just for debug and let user verify that information looks fine
+    # Display what has been scraped. Just for debug and let user verify that information looks fine
     def ShowScrapingInfo(self):
         print("Manufacturer:\t\t" + self.Manufacturer)
         print("Manufacturer PN:\t" + self.ManufacturerPN)
@@ -75,7 +75,7 @@ class digikey:
         self.ShowShortcuts()
 
 
-    #Simple validation of DigiKey URL that user has provided
+    # Simple validation of DigiKey URL that user has provided
     def ValidateAndSetURL(self, url):
         if url.strip().find("digikey") == -1:
             return -1
@@ -85,7 +85,7 @@ class digikey:
             return 1
 
 
-    #Ask user to provide DigiKey URL for fetching data
+    # Ask user to provide DigiKey URL for fetching data
     def AskForURL(self):
         while True:
             print("Please enter DigiKey URL:")
@@ -123,7 +123,7 @@ class digikey:
                 exit()
 
 
-    #Print(out Shortcuts)
+    # Print(out Shortcuts)
     def ShowShortcuts(self):
         print("\r\n---------------------------------------------")
         print("---\t Use following shortcuts \t---")
@@ -144,8 +144,8 @@ class digikey:
         print("CTRL+Q \t- Quit")
 
 
-    #Self Explainatory functions
-    #Not used at the moment
+    # Self Explainatory functions
+    # Not used at the moment
     # def CopyManufacturer(self):
     #     clipboard.copy(self.Manufacturer)
     #     print("Manufacturer info copied to clipboard.")
