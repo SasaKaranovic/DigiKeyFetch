@@ -39,7 +39,14 @@ class digikey:
 
     #Start gathering data
     def StartScrape(self):
-        self.page   = requests.get(self.url)
+        custom_header = {
+                            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0',
+                            'ACCEPT': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+                            'ACCEPT_ENCODING': 'gzip, deflate',
+                            'ACCEPT_LANGUAGE': 'en-US,en;q=0.9',
+                            'REFERER': 'https://www.google.com/',
+                        }
+        self.page   = requests.get(self.url, headers = custom_header)
         self.tree   = html.fromstring(self.page.content)
 
 
