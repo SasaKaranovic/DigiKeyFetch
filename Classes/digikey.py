@@ -19,7 +19,7 @@ from fake_useragent import UserAgent
 #   Simple DigiKey fetch class
 #   URL     : http://sasakaranovic.com/projects/digikey-fetch-tool/
 #   Author  : Sasa Karanovic
-#   Version : 0.3
+#   Version : 0.4
 #
 
 
@@ -86,6 +86,11 @@ class digikey:
         ManufacturerPN = ProductData["mpn"]
         DigiKeyPN      = ProductData["sku"]
         Description    = ProductData["description"]
+
+        #Manufacturer   = self.tree.xpath(XP_PD_T + "h2[@itemprop='manufacturer']//span[@itemprop='name']/text()")
+        #ManufacturerPN = self.tree.xpath(XP_PD_T + "th[contains(text(),'Manufacturer Part Number')]/following-sibling::td[1]/text()")
+        #DigiKeyPN      = self.tree.xpath(XP_PD_T + "th[contains(text(),'Digi-Key Part Number')]/following-sibling::td/meta/@content")
+        #Description    = self.tree.xpath(XP_PD_T + "th[contains(text(),'Description')]/following-sibling::td/text()")
 
         self.Manufacturer     = ''.join(Manufacturer).strip()
         self.ManufacturerPN   = ''.join(ManufacturerPN).strip()
