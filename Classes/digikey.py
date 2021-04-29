@@ -5,7 +5,9 @@ from ctypes import wintypes
 import win32con
 from lxml import html
 import requests
+import json
 import clipboard
+from fake_useragent import UserAgent
 
 #    ____  _       _ __ __              ______     __       __  
 #   / __ \(_)___ _(_) //_/__  __  __   / ____/__  / /______/ /_ 
@@ -17,7 +19,7 @@ import clipboard
 #   Simple DigiKey fetch class
 #   URL     : http://sasakaranovic.com/projects/digikey-fetch-tool/
 #   Author  : Sasa Karanovic
-#   Version : 0.2
+#   Version : 0.3
 #
 
 
@@ -39,24 +41,51 @@ class digikey:
 
     # Start gathering data
     def StartScrape(self):
-        custom_header = {
-                            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0',
-                            'ACCEPT': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
-                            'ACCEPT_ENCODING': 'gzip, deflate',
-                            'ACCEPT_LANGUAGE': 'en-US,en;q=0.9',
-                            'REFERER': 'https://www.google.com/',
-                        }
+        ua = UserAgent()
+
+        custom_header   = {
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+        "Sec-Fetch-Site": "same-origin",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-User": "?1",
+        "Sec-Fetch-Dest": "document",
+        "Referer": "https://www.google.com/",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-US,en;q=0.9"
+                          }
+
+        print("Scraping {}".format(self.url))
+
         self.page   = requests.get(self.url, headers = custom_header)
         self.tree   = html.fromstring(self.page.content)
 
+        text_file = open("response.html", "w")
+        text_file.write(str(self.page.text.encode('utf8')))
+        text_file.close()
+        # print("done")
+        # exit()
 
-        #Define some x-path related stuff
-        XP_PD_T = "//table[@id='product-overview']//"
+        # Using X-Path (old)
+        # #Define some x-path related stuff
+        # XP_PD_T = "//table[@id='product-overview']//"
 
-        Manufacturer   = self.tree.xpath(XP_PD_T + "h2[@itemprop='manufacturer']//span[@itemprop='name']/text()")
-        ManufacturerPN = self.tree.xpath(XP_PD_T + "th[contains(text(),'Manufacturer Part Number')]/following-sibling::td[1]/text()")
-        DigiKeyPN      = self.tree.xpath(XP_PD_T + "th[contains(text(),'Digi-Key Part Number')]/following-sibling::td/meta/@content")
-        Description    = self.tree.xpath(XP_PD_T + "th[contains(text(),'Description')]/following-sibling::td/text()")
+        # Manufacturer   = self.tree.xpath(XP_PD_T + "h2[@itemprop='manufacturer']//span[@itemprop='name']/text()")
+        # ManufacturerPN = self.tree.xpath(XP_PD_T + "th[contains(text(),'Manufacturer Part Number')]/following-sibling::td[1]/text()")
+        # DigiKeyPN      = self.tree.xpath(XP_PD_T + "th[contains(text(),'Digi-Key Part Number')]/following-sibling::td/meta/@content")
+        # Description    = self.tree.xpath(XP_PD_T + "th[contains(text(),'Description')]/following-sibling::td/text()")
+
+        # Using script data
+        Application_ld_json = self.tree.xpath("//html//head//script[@type='application/ld+json']/text()")
+        jsonData = json.loads(Application_ld_json[0])
+        ProductData = jsonData["@graph"][2]
+
+        Manufacturer   = ProductData["brand"]["name"]
+        ManufacturerPN = ProductData["mpn"]
+        DigiKeyPN      = ProductData["sku"]
+        Description    = ProductData["description"]
 
         self.Manufacturer     = ''.join(Manufacturer).strip()
         self.ManufacturerPN   = ''.join(ManufacturerPN).strip()
