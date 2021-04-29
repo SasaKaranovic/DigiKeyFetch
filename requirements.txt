@@ -3,3 +3,5 @@ pypiwin32
 lxml
 requests
 keyboard
+fake_useragent
+argparse
